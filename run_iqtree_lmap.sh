@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # run_igtree_lmap.sh
-# Last modified: tor nov 11, 2021  05:28
+# Last modified: tor nov 11, 2021  06:13
 # Sign: JN
 
 set -eu -o pipefail
+
 
 ## Defaults
 multiplier=50
@@ -13,6 +14,7 @@ version='0.1'
 iqtree='iqtree2'
 quiet=0
 iqtree2threads='AUTO'
+
 
 ## Check if iqtree2
 command -v "${iqtree}" > /dev/null 2>&1 || { echo >&2 "Error: iqtree2 not found."; exit 1; }
@@ -60,35 +62,37 @@ Examples:
            $(basename "$0") -a 25 -c 0.80 -m 'GTR+G4' -x -q infile.fasta
 
 Input:
-            Fasta formatted sequence files (aligned, that is, all sequence entries
-            should be of the same length).
+           Fasta formatted sequence files (aligned, that is, all sequence entries
+           should be of the same length).
 
 Output:
-            The name of the input file and the corresponding fraction of highly supported
-            quartets are written to a .lmap.out file.
-            The .lmap.quartetlh from iqtree2 will also be kept (other files from iqtree
-            can be removed using -x).
-            If the -c option is used, the file name of the files not matching the cutoff
-            standard will be printed to stdout. This list can then be captured in downstream
-            steps.
+           The name of the input file and the corresponding fraction of highly supported
+           quartets are written to a .lmap.out file.
+           The .lmap.quartetlh from iqtree2 will also be kept (other files from iqtree
+           can be removed using -x).
+           If the -c option is used, the file name of the files not matching the cutoff
+           standard will be printed to stdout. This list can then be captured in downstream
+           steps.
 
 Notes:
-            Program iqtree2 (www.iqtree.org) needs to be installed.
-            For the theory behind likelihood mapping, see Strimmer and von
-            Haeseler. Proc. Natl. Acad. Sci. USA Vol. 94, pp. 6815–6819, June 1997.
+           Program iqtree2 (www.iqtree.org) needs to be installed.
+           For the theory behind likelihood mapping, see Strimmer and von
+           Haeseler. Proc. Natl. Acad. Sci. USA Vol. 94, pp. 6815–6819, June 1997.
 
 
-License:    Copyright (C) 2021 nylander <johan.nylander@nrm.se>
-            Distributed under terms of the MIT license.
+License:   Copyright (C) 2021 nylander <johan.nylander@nrm.se>
+           Distributed under terms of the MIT license.
 
 End_Of_Usage
 
 }
 
+
 ## For comparing floating numbers
 compare() (IFS=" "
   exec awk "BEGIN{if (!($*)) exit(1)}"
 )
+
 
 ## Read arguments
 aflag=
@@ -134,6 +138,7 @@ do
 done
 shift $((OPTIND - 1))
 
+
 ## Check if args
 if [ $# -eq 0 ] ; then
     usage
@@ -162,6 +167,7 @@ else
   nquartets=$((nseq*multiplier))
 fi
 
+
 ## Put remaining args in files
 #FILES="$*"
 #echo "files to read: $FILES"
@@ -173,6 +179,7 @@ if [ "${quiet}" == 0 ] ; then
   echo "Run likelihood mapping of $nquartets quartets for file $infile" 1>&2
 fi
 
+
 ## Run igtree2
 "${iqtree}" \
   -s "${infile}" \
@@ -181,6 +188,7 @@ fi
   -n 0 \
   -T "${iqtree2threads}" \
   -m "${model}" > /dev/null 2>&1
+
 
 ## Parse .lmap.quartetlh or not
 if [ "${dflag}" ] ; then
@@ -204,6 +212,8 @@ else
   fi
 fi
 
+
+## Take care of output
 if [ -e "${infile}.lmap.out" ] ; then
   if [ "${quiet}"  == 0 ] ; then
     echo "Wrote file ${infile}.lmap.out" 1>&2
