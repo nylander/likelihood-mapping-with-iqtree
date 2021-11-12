@@ -1,6 +1,6 @@
-# Likelihood mapping in iqtree2
+# Likelihood mapping with iqtree2
 
-- Last modified: tor nov 11, 2021  05:47
+- Last modified: fre nov 12, 2021  01:52
 - Sign: Johan Nylander
 
 
