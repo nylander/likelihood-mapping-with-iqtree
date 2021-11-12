@@ -1,0 +1,16 @@
+## Installation
+
+The script is written in bash, and requires `iqtree2` to be installed.
+The full path to `iqtree2` can changed directly in the script (line 14) if needed.
+
+In order to utilize all functionality of the provided `Makefile`, GNU make and
+GNU parallel needs to be installed.
+
+If `make` is installed, the script can be installed (in `/usr/local/bin`) by using
+
+    $ make install
+
+To install in another location, e.g., `$HOME/bin`, use
+
+    $ make PREFIX=$HOME install
+

@@ -1,13 +1,34 @@
 # Likelihood mapping with iqtree2
 
-- Last modified: fre nov 12, 2021  02:13
+- Last modified: fre nov 12, 2021  03:25
 - Sign: Johan Nylander
 
 
 ## Description
 
-Script for running likelihood mapping in iqtree, and summarize the run as the
-fraction of highly supported quartets for the data.
+Script for running likelihood mapping (Strimmer & von Haeseler, 1997) with
+iqtree2 (Minh et al., 2020), and summarize the run as the fraction of highly
+supported quartets for the data.
+
+Reads a fasta-formatted input file (multiple sequence alignment) as input,
+prints the fraction of "highly supportive" quartets as output (to file or
+stout, or both).
+
+## Installation
+
+The script is written in bash, and requires `iqtree2` to be installed.
+The full path to `iqtree2` can changed directly in the script (line 14) if needed.
+
+In order to utilize all functionality of the provided `Makefile`, GNU make and
+GNU parallel needs to be installed.
+
+If `make` is installed, the script can be installed (in `/usr/local/bin`) by using
+
+    $ make install
+
+To install in another location, e.g., `$HOME/bin`, use
+
+    $ make PREFIX=$HOME install
 
 
 ## Usage
@@ -17,18 +38,19 @@ fraction of highly supported quartets for the data.
 
 ### Example
 
-Run likelihood mapping while automatically setting number of quartets and automatic
-model selection, and report the fraction of "supported" quartets for the file:
+Run likelihood mapping while automatically setting number of quartets, use
+automatic model selection, and report the fraction of "supported" quartets for
+the input file (fasta formatted multiple-sequence alignment):
 
     $ ./run_iqtree_lmap.sh data/infile.fasta
 
-In this case, the result is printed to file `data/infile.fasta.lmap.out` with the
-following (tab-delimited) content:
+In this case, the result is printed to file `data/infile.fasta.lmap.out` with
+the following (tab-delimited) content:
 
     data/infile.fasta	0.66
 
-Note that the script also keeps the other files that iqtree2 creates, unless the `-x`
-option is used (see **Options**).
+Note that the script also keeps the other files that iqtree2 creates, unless
+the `-x` option is used (see **Options**).
 
 
 ### Options
@@ -99,6 +121,7 @@ run the likelihood mapping in parallel (by utilizing the provided
 
 ## Links and further reading
 
+- [Minh et al. 2020](https://academic.oup.com/mbe/article/37/5/1530/5721363)
 - [Strimmer and von Haeseler 1997](doc/Strimmer_von_Haeseler_1997.pdf)
 - [igtree2, www.iqtree.org](http://www.iqtree.org)
 - [Likelihood-mapping in iqtree2, www.iqtree.org/doc/Command-Reference#likelihood-mapping-analysis](http://www.iqtree.org/doc/Command-Reference#likelihood-mapping-analysis)
