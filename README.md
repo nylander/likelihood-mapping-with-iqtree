@@ -1,6 +1,6 @@
 # Likelihood mapping with iqtree2
 
-- Last modified: fre nov 12, 2021  01:52
+- Last modified: fre nov 12, 2021  02:13
 - Sign: Johan Nylander
 
 
@@ -12,13 +12,45 @@ fraction of highly supported quartets for the data.
 
 ## Usage
 
-Example:
+    $ run_iqtree_lmap.sh [-a 50][-n 10000][-m TEST][-p][-c 0.70][-d][-x][-v][-h] infile.fasta
+
+
+### Example
+
+Run likelihood mapping while automatically setting number of quartets and automatic
+model selection, and report the fraction of "supported" quartets for the file:
 
     $ ./run_iqtree_lmap.sh data/infile.fasta
 
-For more options, see output from
+In this case, the result is printed to file `data/infile.fasta.lmap.out` with the
+following (tab-delimited) content:
 
-    $ ./run_iqtree_lmap.sh -h
+    data/infile.fasta	0.66
+
+Note that the script also keeps the other files that iqtree2 creates, unless the `-x`
+option is used (see **Options**).
+
+
+### Options
+
+    -n number -- Specify the number of quartets to be sampled. Default
+                 is using a multiplier on the number of sequences in the
+                 infile.
+    -a number -- Specify the multiplier to use for automatically set the
+                 number of quartets sampled. The total number of quartets
+                 are number of sequences times the multiplier.
+                 Default multiplier is 50.
+    -m model  -- Specify the model to use. Default is TEST.
+    -c cutoff -- Specify a cutoff-level (0-1) for files to be reported.
+                 If the fraction of supported quartets are below this value,
+                 the file name is printed. Default is to print output for all
+                 files.
+    -d        -- Do not parse the output (the .lmap.quartetlh file).
+    -x        -- Remove all iqtree2 output except the .lmap.quartetlh file.
+                 Default is to keep all files.
+    -q        -- Be quiet (noverbose)
+    -v        -- Print version.
+    -h        -- Print help message.
 
 
 ## Likelihood mapping run manually
@@ -50,16 +82,22 @@ areas 1, 2, or 3, over the total number of sampled quartets.
     $ awk 'BEGIN{i=0}!/SeqIDs/{i=i+1; if($8==1||$8==2||$8==3) a=a+1}END{print a/i}' data/infile.fasta.lmap.quartetlh
 
 
-## Try also(?)
+## Try also
 
-1. Make sure you have `iqtree2`, `make`, and `parallel` (GNU parallel) installed
-2. Put your fasta-formatted alignments (files ending in `.fas`) in the `data` folder
+If you have several fasta files and a multi-core computer, you may also try to
+run the likelihood mapping in parallel (by utilizing the provided
+[`Makefile`](Makefile) and `data` folder).
+
+1. Make sure you have `iqtree2`, `make`, and `parallel` (GNU parallel)
+   installed
+2. Put your fasta-formatted alignments (files ending in `.fas`) in the `data`
+   folder
 4. Run
 
        $ make run > lmap.out &
 
 
-## Links
+## Links and further reading
 
 - [Strimmer and von Haeseler 1997](doc/Strimmer_von_Haeseler_1997.pdf)
 - [igtree2, www.iqtree.org](http://www.iqtree.org)

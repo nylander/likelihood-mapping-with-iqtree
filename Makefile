@@ -1,10 +1,9 @@
-#
 # Makefile
-# nylander, 2021-11-11 15:56
-#
+# Last modified: fre nov 12, 2021  02:00
+# Sign: nylander
 
 all:
-	@echo "Use this Makefile for testing (test), or install and clean"
+	@echo "Use this Makefile for test, install, clean, or run"
 
 run:
 	@find ./data -name '*.fas' | parallel './run_iqtree_lmap.sh -x -q {}'
@@ -12,7 +11,7 @@ run:
 install:
 	@cp -v run_iqtree_lmap.sh $$HOME/bin
 
-test: test0 test1 test2 test3
+test: test1 test2 test3 test4
 
 test1:
 	./run_iqtree_lmap.sh data/infile.fasta
@@ -25,12 +24,12 @@ test2:
 	@make clean
 
 test3:
-	./run_iqtree_lmap.sh -a 25 -c 0.80 -m 'GTR+G4' -x -q data/infile.fasta
+	./run_iqtree_lmap.sh -a 25 -c 0.60 -m 'GTR+G4' -x  data/infile.fasta
 	cat data/infile.fasta.lmap.out
 	@make clean
 
 test4:
-	./run_iqtree_lmap.sh -a 25 -c 0.60 -m 'GTR+G4' -x  data/infile.fasta
+	./run_iqtree_lmap.sh -a 25 -c 0.80 -m 'GTR+G4' -x -q data/infile.fasta
 	cat data/infile.fasta.lmap.out
 	@make clean
 
