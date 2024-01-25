@@ -1,11 +1,11 @@
 # Makefile for run_iqtree_lmap.sh
-# Last modified: fre nov 12, 2021  03:41
+# Last modified: tor jan 25, 2024  10:31
 # Sign: nylander
 
-PROG = run_iqtree_lmap.sh
-PARALLEL = parallel
-DATADIR = ./data
-DATAFILE = infile.fasta
+PROG := run_iqtree_lmap.sh
+PARALLEL := parallel
+DATADIR := ./data
+DATAFILE := infile.fasta
 
 ifeq ($(PREFIX),)
 	PREFIX := /usr/local
