@@ -1,8 +1,7 @@
 # Likelihood mapping with iqtree2
 
-- Last modified: fre nov 12, 2021  03:25
+- Last modified: fre dec 20, 2024  12:10
 - Sign: Johan Nylander
-
 
 ## Description
 
@@ -12,11 +11,11 @@ supported quartets for the data.
 
 Reads a fasta-formatted input file (multiple sequence alignment) as input,
 prints the fraction of "highly supportive" quartets as output (to file or
-stout, or both).
+stdout, or both).
 
 ## Installation
 
-The script is written in bash, and requires `iqtree2` to be installed.
+The script is written in bash, and requires `iqtree2` (www.iqtree.org) to be installed.
 The full path to `iqtree2` can changed directly in the script (line 14) if needed.
 
 In order to utilize all functionality of the provided `Makefile`, GNU make and
@@ -30,39 +29,21 @@ To install in another location, e.g., `$HOME/bin`, use
 
     $ make PREFIX=$HOME install
 
-
 ## Usage
 
-    $ run_iqtree_lmap.sh [-a 50][-n 10000][-m TEST][-p][-c 0.70][-d][-x][-v][-h] infile.fasta
-
-
-### Example
-
-Run likelihood mapping while automatically setting number of quartets, use
-automatic model selection, and report the fraction of "supported" quartets for
-the input file (fasta formatted multiple-sequence alignment):
-
-    $ ./run_iqtree_lmap.sh data/infile.fasta
-
-In this case, the result is printed to file `data/infile.fasta.lmap.out` with
-the following (tab-delimited) content:
-
-    data/infile.fasta	0.66
-
-Note that the script also keeps the other files that iqtree2 creates, unless
-the `-x` option is used (see **Options**).
-
+    $ run_iqtree_lmap.sh [-n 10000][-a 50][-m TEST][-t AUTO][-c 0.70][-d][-x][-q][-v][-h] infile.fasta
 
 ### Options
 
     -n number -- Specify the number of quartets to be sampled. Default
                  is using a multiplier on the number of sequences in the
-                 infile.
+                 infile (see option -a).
     -a number -- Specify the multiplier to use for automatically set the
                  number of quartets sampled. The total number of quartets
                  are number of sequences times the multiplier.
                  Default multiplier is 50.
     -m model  -- Specify the model to use. Default is TEST.
+    -t number -- Specify number of threads for iqtree2. Default is 'AUTO'.
     -c cutoff -- Specify a cutoff-level (0-1) for files to be reported.
                  If the fraction of supported quartets are below this value,
                  the file name is printed. Default is to print output for all
@@ -74,9 +55,35 @@ the `-x` option is used (see **Options**).
     -v        -- Print version.
     -h        -- Print help message.
 
+### Examples
+
+    $ run_iqtree_lmap.sh infile.fasta
+    $ run_iqtree_lmap.sh -d -x infile.fasta
+    $ run_iqtree_lmap.sh -a 25 -c 0.80 -m 'GTR+G4' -t 10 -x -q infile.fasta
+
+### Input
+
+Fasta formatted sequence files (aligned, that is, all sequence entries
+should be of the same length).
+
+### Output
+
+The name of the input file and the corresponding fraction of highly supported
+quartets are written to a .lmap.out file.
+The .lmap.quartetlh from iqtree2 will also be kept (other files from iqtree2
+can be removed using `-x`).
+If the `-c` option is used, the file name of the files not matching the cutoff
+standard will be printed to stdout. This list can then be captured in downstream
+steps.
+
+
+## License
+
+Copyright (C) 2021-2025 Johan Nylander <johan.nylander@nrm.se>
+Distributed under terms of the [MIT license](LICENSE).
+
 
 ## Likelihood mapping run manually
-
 
 ### 1. Run iqtree2
 
@@ -94,7 +101,6 @@ The `data/infile.fasta.lmap.quartetlh` file -- an example (first two lines):
 - weight2 = exp(lh2) / (exp(lh1)+exp(lh2)+exp(lh3))
 - weight3 = exp(lh3) / (exp(lh1)+exp(lh2)+exp(lh3))
 - (That means, they are the likelihood weights of the 3 quartets).
-
 
 ### 2. Parse the `.lmap.quartetlh` file to give proportion of well-supported quartets
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run_igtree_lmap.sh
-# Last modified: tor nov 11, 2021  06:13
+# Last modified: fre dec 20, 2024  11:55
 # Sign: JN
 
 set -eu -o pipefail
@@ -10,7 +10,7 @@ set -eu -o pipefail
 ## Defaults
 multiplier=50
 model='TEST'
-version='0.1'
+version='0.1.1'
 iqtree='iqtree2'
 quiet=0
 iqtree2threads='AUTO'
@@ -34,17 +34,18 @@ By:
            Johan Nylander
 
 Usage:
-           $(basename "$0") [-a 50][-n 10000][-m TEST][-p][-c 0.70][-d][-x][-v][-h] infile.fasta
+           $(basename "$0") [-n 10000][-a 50][-m TEST][-t AUTO][-c 0.70][-d][-x][-q][-v][-h] infile.fasta
 
 Options:
            -n number -- Specify the number of quartets to be sampled. Default
                         is using a multiplier on the number of sequences in the
-                        infile.
+                        infile (see option -a).
            -a number -- Specify the multiplier to use for automatically set the
                         number of quartets sampled. The total number of quartets
                         are number of sequences times the multiplier.
                         Default multiplier is 50.
            -m model  -- Specify the model to use. Default is TEST.
+           -t number -- Specify number of threads for iqtree2. Default is 'AUTO'.
            -c cutoff -- Specify a cutoff-level (0-1) for files to be reported.
                         If the fraction of supported quartets are below this value,
                         the file name is printed. Default is to print output for all
@@ -59,7 +60,7 @@ Options:
 Examples:
            $(basename "$0") infile.fasta
            $(basename "$0") -d -x infile.fasta
-           $(basename "$0") -a 25 -c 0.80 -m 'GTR+G4' -x -q infile.fasta
+           $(basename "$0") -a 25 -c 0.80 -m 'GTR+G4' -t 10 -x -q infile.fasta
 
 Input:
            Fasta formatted sequence files (aligned, that is, all sequence entries
@@ -80,7 +81,7 @@ Notes:
            Haeseler. Proc. Natl. Acad. Sci. USA Vol. 94, pp. 6815–6819, June 1997.
 
 
-License:   Copyright (C) 2021 nylander <johan.nylander@nrm.se>
+License:   Copyright (C) 2021-2025 Johan Nylander <johan.nylander@nrm.se>
            Distributed under terms of the MIT license.
 
 End_Of_Usage
@@ -96,15 +97,16 @@ compare() (IFS=" "
 
 ## Read arguments
 aflag=
-nflag=
-mflag=
-dflag=
 cflag=
+dflag=
+mflag=
+nflag=
+qflag=
+tflag=
 vflag=
 xflag=
-qflag=
 
-while getopts 'a:n:m:c:dvhxq' OPTION
+while getopts 'a:n:m:c:t:dvhxq' OPTION
 do
   case $OPTION in
   a) aflag=1
@@ -118,6 +120,9 @@ do
      ;;
   c) cflag=1
      cval="$OPTARG"
+     ;;
+  t) tflag=1
+     tval="$OPTARG"
      ;;
   d) dflag=1
      ;;
@@ -167,17 +172,20 @@ else
   nquartets=$((nseq*multiplier))
 fi
 
+if [ "${tflag}" ] ; then
+  iqtree2threads="${tval}"
+fi
+
+if [ "${quiet}" == 0 ] ; then
+  echo "" 1>&2
+  echo "Run likelihood mapping of $nquartets quartets for file $infile" 1>&2
+fi
 
 ## Put remaining args in files
 #FILES="$*"
 #echo "files to read: $FILES"
 #for file in $FILES ; do
 #done
-
-if [ "${quiet}" == 0 ] ; then
-  echo "" 1>&2
-  echo "Run likelihood mapping of $nquartets quartets for file $infile" 1>&2
-fi
 
 
 ## Run igtree2
