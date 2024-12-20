@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run_igtree_lmap.sh
-# Last modified: fre dec 20, 2024  11:55
+# Last modified: fre dec 20, 2024  01:04
 # Sign: JN
 
 set -eu -o pipefail
@@ -145,13 +145,6 @@ shift $((OPTIND - 1))
 
 
 ## Check if args
-if [ $# -eq 0 ] ; then
-    usage
-    exit
-else
-  infile="$1"
-fi
-
 if [ "${vflag}" ] ; then
   echo "${version}"
   exit
@@ -165,27 +158,30 @@ if [ "${mflag}" ] ; then
   model="${mval}"
 fi
 
-if [ "${nflag}" ] ; then
-  nquartets="${nval}"
-else
-  nseq=$(grep -c '>' "${infile}")
-  nquartets=$((nseq*multiplier))
-fi
-
 if [ "${tflag}" ] ; then
   iqtree2threads="${tval}"
+fi
+
+if [ "${nflag}" ] ; then
+  nquartets="${nval}"
+fi
+
+if [ -z "$*" ]; then
+  usage
+  exit
+else
+  infile="$1"
+fi
+
+if [ -z "${nflag}" ] ; then
+  nseq=$(grep -c '>' "${infile}")
+  nquartets=$((nseq*multiplier))
 fi
 
 if [ "${quiet}" == 0 ] ; then
   echo "" 1>&2
   echo "Run likelihood mapping of $nquartets quartets for file $infile" 1>&2
 fi
-
-## Put remaining args in files
-#FILES="$*"
-#echo "files to read: $FILES"
-#for file in $FILES ; do
-#done
 
 
 ## Run igtree2
