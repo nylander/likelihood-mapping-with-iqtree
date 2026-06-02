@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run_igtree_lmap.sh
-# Last modified: 2026-06-01 10:58:28
+# Last modified: 2026-06-02 14:34:00
 # Sign: JN
 
 set -eu -o pipefail
@@ -10,7 +10,7 @@ set -eu -o pipefail
 ## Defaults
 multiplier=50
 model='TEST'
-version='0.1.2'
+version='0.2.0'
 iqtree='iqtree3'
 quiet=0
 iqtreethreads='AUTO'
@@ -184,7 +184,7 @@ if [ "${quiet}" == 0 ] ; then
 fi
 
 
-## Run igtree2
+## Run igtree3
 "${iqtree}" \
   -s "${infile}" \
   -lmap "${nquartets}" \
