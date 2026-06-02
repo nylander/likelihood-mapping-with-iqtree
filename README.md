@@ -1,6 +1,6 @@
 # Likelihood mapping with iqtree3
 
-- Last modified: 2026-06-02 14:58:06
+- Last modified: 2026-06-02 15:06:11
 - Sign: Johan Nylander
 
 ## Description
@@ -9,7 +9,7 @@ Script for running likelihood mapping (Strimmer & von Haeseler, 1997) with
 iqtree3 (Minh et al., 2020), and summarize the run as the fraction of highly
 supported quartets for the data.
 
-![Likelihood mapping as produced by iqtree3](doc/lmap.png)
+![Likelihood mapping as produced by iqtree3](doc/iqtree3.png)
 
 Reads a fasta-formatted input file (multiple sequence alignment) as input,
 prints the fraction of "highly supportive" quartets as output (to file or
@@ -85,6 +85,8 @@ iqtree3 will produce graphical summaries of the output (.eps, .svg format).  It
 is fairly straightforward to produce your own plots using, for example,
 packages in R, with the .lmap.quartetlh file as input.  Here is one example:
 [plot_quartetlh.R](scripts/plot_quartetlh.R).
+
+![Plotting with ggtern in R](doc/ggtern.png)
 
 ## License and Copyright
 
