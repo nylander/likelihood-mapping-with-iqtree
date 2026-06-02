@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run_igtree_lmap.sh
-# Last modified: fre dec 20, 2024  01:04
+# Last modified: 2026-06-01 10:58:28
 # Sign: JN
 
 set -eu -o pipefail
@@ -10,14 +10,14 @@ set -eu -o pipefail
 ## Defaults
 multiplier=50
 model='TEST'
-version='0.1.1'
-iqtree='iqtree2'
+version='0.1.2'
+iqtree='iqtree3'
 quiet=0
-iqtree2threads='AUTO'
+iqtreethreads='AUTO'
 
 
-## Check if iqtree2
-command -v "${iqtree}" > /dev/null 2>&1 || { echo >&2 "Error: iqtree2 not found."; exit 1; }
+## Check if iqtree3
+command -v "${iqtree}" > /dev/null 2>&1 || { echo >&2 "Error: iqtree3 not found."; exit 1; }
 
 
 ## Usage function
@@ -27,7 +27,7 @@ cat <<End_Of_Usage
 $(basename "$0") version ${version}
 
 What:
-           Do likelihood mapping using iqtree2 and report fraction of
+           Do likelihood mapping using iqtree3 and report fraction of
            highly supported quartets.
 
 By:
@@ -44,14 +44,14 @@ Options:
                         number of quartets sampled. The total number of quartets
                         are number of sequences times the multiplier.
                         Default multiplier is 50.
-           -m model  -- Specify the model to use. Default is TEST.
-           -t number -- Specify number of threads for iqtree2. Default is 'AUTO'.
+           -m model  -- Specify the substitution model to use. Default is TEST.
+           -t number -- Specify number of threads for iqtree3. Default is 'AUTO'.
            -c cutoff -- Specify a cutoff-level (0-1) for files to be reported.
                         If the fraction of supported quartets are below this value,
                         the file name is printed. Default is to print output for all
                         files.
            -d        -- Do not parse the output (the .lmap.quartetlh file).
-           -x        -- Remove all iqtree2 output except the .lmap.quartetlh file.
+           -x        -- Remove all iqtree3 output except the .lmap.quartetlh file.
                         Default is to keep all files.
            -q        -- Be quiet (noverbose)
            -v        -- Print version.
@@ -69,19 +69,19 @@ Input:
 Output:
            The name of the input file and the corresponding fraction of highly supported
            quartets are written to a .lmap.out file.
-           The .lmap.quartetlh from iqtree2 will also be kept (other files from iqtree
+           The .lmap.quartetlh from iqtree3 will also be kept (other files from iqtree3
            can be removed using -x).
            If the -c option is used, the file name of the files not matching the cutoff
            standard will be printed to stdout. This list can then be captured in downstream
            steps.
 
 Notes:
-           Program iqtree2 (www.iqtree.org) needs to be installed.
+           Program iqtree3 (www.iqtree.org) needs to be installed.
            For the theory behind likelihood mapping, see Strimmer and von
            Haeseler. Proc. Natl. Acad. Sci. USA Vol. 94, pp. 6815–6819, June 1997.
 
 
-License:   Copyright (C) 2021-2025 Johan Nylander <johan.nylander@nrm.se>
+License:   Copyright (C) 2021-2026 Johan Nylander <johan.nylander@nrm.se>
            Distributed under terms of the MIT license.
 
 End_Of_Usage
@@ -159,7 +159,7 @@ if [ "${mflag}" ] ; then
 fi
 
 if [ "${tflag}" ] ; then
-  iqtree2threads="${tval}"
+  iqtreethreads="${tval}"
 fi
 
 if [ "${nflag}" ] ; then
@@ -190,7 +190,7 @@ fi
   -lmap "${nquartets}" \
   -wql \
   -n 0 \
-  -T "${iqtree2threads}" \
+  -T "${iqtreethreads}" \
   -m "${model}" > /dev/null 2>&1
 
 

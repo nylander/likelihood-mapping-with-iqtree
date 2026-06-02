@@ -1,13 +1,15 @@
-# Likelihood mapping with iqtree2
+# Likelihood mapping with iqtree3
 
-- Last modified: fre dec 20, 2024  12:10
+- Last modified: 2026-06-01 11:34:35
 - Sign: Johan Nylander
 
 ## Description
 
 Script for running likelihood mapping (Strimmer & von Haeseler, 1997) with
-iqtree2 (Minh et al., 2020), and summarize the run as the fraction of highly
+iqtree3 (Minh et al., 2020), and summarize the run as the fraction of highly
 supported quartets for the data.
+
+![Likelihood as produced by iqtree3](doc/lmap.png)
 
 Reads a fasta-formatted input file (multiple sequence alignment) as input,
 prints the fraction of "highly supportive" quartets as output (to file or
@@ -15,8 +17,8 @@ stdout, or both).
 
 ## Installation
 
-The script is written in bash, and requires `iqtree2` (www.iqtree.org) to be installed.
-The full path to `iqtree2` can changed directly in the script (line 14) if needed.
+The script is written in bash, and requires `iqtree3` (www.iqtree.org) to be installed.
+The full path to `iqtree3` can changed directly in the script (line 14) if needed.
 
 In order to utilize all functionality of the provided `Makefile`, GNU make and
 GNU parallel needs to be installed.
@@ -43,13 +45,13 @@ To install in another location, e.g., `$HOME/bin`, use
                  are number of sequences times the multiplier.
                  Default multiplier is 50.
     -m model  -- Specify the model to use. Default is TEST.
-    -t number -- Specify number of threads for iqtree2. Default is 'AUTO'.
+    -t number -- Specify number of threads for iqtree3. Default is 'AUTO'.
     -c cutoff -- Specify a cutoff-level (0-1) for files to be reported.
                  If the fraction of supported quartets are below this value,
                  the file name is printed. Default is to print output for all
                  files.
     -d        -- Do not parse the output (the .lmap.quartetlh file).
-    -x        -- Remove all iqtree2 output except the .lmap.quartetlh file.
+    -x        -- Remove all iqtree3 output except the .lmap.quartetlh file.
                  Default is to keep all files.
     -q        -- Be quiet (noverbose)
     -v        -- Print version.
@@ -70,7 +72,7 @@ should be of the same length).
 
 The name of the input file and the corresponding fraction of highly supported
 quartets are written to a .lmap.out file.
-The .lmap.quartetlh from iqtree2 will also be kept (other files from iqtree2
+The .lmap.quartetlh from iqtree3 will also be kept (other files from iqtree3
 can be removed using `-x`).
 If the `-c` option is used, the file name of the files not matching the cutoff
 standard will be printed to stdout. This list can then be captured in downstream
@@ -85,9 +87,9 @@ Distributed under terms of the [MIT license](LICENSE).
 
 ## Likelihood mapping run manually
 
-### 1. Run iqtree2
+### 1. Run iqtree3
 
-    $ iqtree2 -s data/infile.fasta -lmap ALL -wql -n 0 -m TEST
+    $ iqtree3 -s data/infile.fasta -lmap ALL -wql -n 0 -m TEST
 
 The `data/infile.fasta.lmap.quartetlh` file -- an example (first two lines):
 
@@ -116,7 +118,7 @@ If you have several fasta files and a multi-core computer, you may also try to
 run the likelihood mapping in parallel (by utilizing the provided
 [`Makefile`](Makefile) and `data` folder).
 
-1. Make sure you have `iqtree2`, `make`, and `parallel` (GNU parallel)
+1. Make sure you have `iqtree3`, `make`, and `parallel` (GNU parallel)
    installed
 2. Put your fasta-formatted alignments (files ending in `.fas`) in the `data`
    folder
@@ -129,8 +131,8 @@ run the likelihood mapping in parallel (by utilizing the provided
 
 - [Minh et al. 2020](https://academic.oup.com/mbe/article/37/5/1530/5721363)
 - [Strimmer and von Haeseler 1997](doc/Strimmer_von_Haeseler_1997.pdf)
-- [igtree2, www.iqtree.org](http://www.iqtree.org)
-- [Likelihood-mapping in iqtree2, www.iqtree.org/doc/Command-Reference#likelihood-mapping-analysis](http://www.iqtree.org/doc/Command-Reference#likelihood-mapping-analysis)
+- [igtree3, www.iqtree.org](http://www.iqtree.org)
+- [Likelihood-mapping in iqtree3, www.iqtree.org/doc/Command-Reference#likelihood-mapping-analysis](http://www.iqtree.org/doc/Command-Reference#likelihood-mapping-analysis)
 - [Post on google groups, groups.google.com/g/iqtree/c/OcfgC0RF110](https://groups.google.com/g/iqtree/c/OcfgC0RF110)
 - [GNU parallel, www.gnu.org/software/parallel](https://www.gnu.org/software/parallel/)
 - [GNU make, www.gnu.org/software/make](https://www.gnu.org/software/make/)

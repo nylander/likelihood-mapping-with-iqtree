@@ -1,7 +1,7 @@
 ## Installation
 
-The script is written in bash, and requires `iqtree2` to be installed.
-The full path to `iqtree2` can changed directly in the script (line 14) if needed.
+The script is written in bash, and requires `iqtree3` to be installed.
+The full path to `iqtree3` can changed directly in the script (line 14) if needed.
 
 In order to utilize all functionality of the provided `Makefile`, GNU make and
 GNU parallel needs to be installed.
