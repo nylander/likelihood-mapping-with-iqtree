@@ -1,11 +1,12 @@
-Old/
 private/*
+*.swp
 README.pdf
 data/*.ckp.gz
 data/*.iqtree
 data/*.lmap.eps
 data/*.lmap.out
 data/*.lmap.quartetlh
+!data/example.lmap.quartetlh
 data/*.lmap.svg
 data/*.log
 data/*.model.gz
